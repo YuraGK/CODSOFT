@@ -166,6 +166,12 @@ public class Main {
 						return;
 					}
 				try {
+					if(inputPhone_numberField.getText().equals("")) {
+						inputPhone_numberField.setText("/");
+					}
+					if(inputEmailField.getText().equals("")) {
+						inputEmailField.setText("/");
+					}
 					addressBook.addContact(new Contact(inputNameField.getText(),
 						inputPhone_numberField.getText(), inputEmailField.getText()));
 				model = new DefaultListModel<String>();
