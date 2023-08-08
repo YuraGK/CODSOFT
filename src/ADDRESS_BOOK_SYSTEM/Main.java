@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 
@@ -139,11 +141,30 @@ public class Main {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String phonePatterns 
+			      = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$" 
+			      + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?){2}\\d{3}$" 
+			      + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$";
+				
+				Pattern phonePattern = Pattern.compile(phonePatterns);
+				Pattern emailPattern = Pattern.compile("^(.+)@(\\S+)$");
+				
+				Matcher phoneMatcher = phonePattern.matcher(inputPhone_numberField.getText());
+				Matcher emailMatcher = emailPattern.matcher(inputEmailField.getText());
 				
 				if(inputPhone_numberField.getText().equals("")&& inputEmailField.getText().equals("")) {
 					resultLabel.setText("Either Phone number or Email should be inserted");
 					
-				}else {
+				}
+				else {
+					if(!inputPhone_numberField.getText().equals("") && !phoneMatcher.matches()) {
+						resultLabel.setText("Invalid input for 'Phone_number' field");
+						return;
+					}
+					if(!inputEmailField.getText().equals("") && !emailMatcher.matches()) {
+						resultLabel.setText("Invalid input for 'Email' field");
+						return;
+					}
 				try {
 					addressBook.addContact(new Contact(inputNameField.getText(),
 						inputPhone_numberField.getText(), inputEmailField.getText()));
